@@ -1,0 +1,22 @@
+CREATE or REPLACE function add_karyawan(
+	in_id_karyawan char(6),
+	in_nama text,
+	in_id_dep int
+)
+RETURNS integer AS $$
+BEGIN
+	if EXISTS (
+		SELECT 1 FROM karyawan 
+		WHERE id_karyawan = in_id_karyawan
+	) 
+	THEN RETURN 409;
+	ELSE
+		INSERT INTO karyawan (id_karyawan, nama, id_dep)
+		VALUES
+		(in_id_karyawan, in_nama, in_id_dep);
+		RETURN 201;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+

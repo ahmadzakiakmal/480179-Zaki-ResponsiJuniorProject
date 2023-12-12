@@ -1,0 +1,21 @@
+CREATE OR REPLACE FUNCTION edit_karyawan(
+	in_id_karyawan char(6),
+	in_nama text,
+	in_id_dep int
+)
+RETURNS integer AS $$
+BEGIN
+	IF EXISTS (
+		SELECT 1 FROM karyawan
+		WHERE id_karyawan = in_id_karyawan
+	)
+	THEN 
+		UPDATE karyawan
+		SET nama = in_nama, id_dep = in_id_dep
+		WHERE id_karyawan = in_id_karyawan;
+		RETURN 200;
+	ELSE 
+		RETURN 404;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
